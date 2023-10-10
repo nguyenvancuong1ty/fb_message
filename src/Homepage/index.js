@@ -7,6 +7,7 @@ import Footer from '~/component/Footer';
 import LoadingAntd from '~/Loading/Loading.antd';
 
 function Home(props) {
+    
     const typeProduct = useSelector((state) => state.typeProductReducer.typeProduct);
     let { data, loading } = useAxios({
         url: `${process.env.REACT_APP_API_URL}/product?type=${typeProduct}`,

@@ -7,15 +7,16 @@ import { useState } from 'react';
 import Billing from '~/component/Billing';
 import { ToastContainer, toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-import { setDataCart } from '~/redux';
-function Cart({ dataCart, uid }) {
+import { setCurrent, setDataCart } from '~/redux';
+import LoadingAntd from '~/Loading/Loading.antd';
+function Cart({ dataCart, number }) {
     const { confirm } = Modal;
     const dispatch = useDispatch();
     const totalCoin = useSelector((state) => state.totalCoinReducer.totalCoin);
     const [messageApi, contextHolder2] = message.useMessage();
     const [checkOut, setCheckOut] = useState([]);
     const [showBilling, setShowBilling] = useState(false);
-
+    const [loading, setLoading] = useState(false);
     const handleDelete = (item) => {
         confirm({
             zIndex: 99999,
@@ -25,18 +26,24 @@ function Cart({ dataCart, uid }) {
             title: 'Xóa hàng',
             content: 'Xóa mặt hàng này vào giỏ hàng của bạn?',
             onOk() {
+                setLoading(true);
                 axios({
                     url: `${process.env.REACT_APP_API_URL}/cart/${item.id}`,
-                    method: 'patch',
+                    method: 'delete',
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`,
                     },
                 })
                     .then(() => {
+                        setLoading(false);
                         messageApi.open({
                             type: 'success',
                             content: 'Xóa thành công!',
                         });
+                        const newDataCart = dataCart.filter((data) => data.id !== item.id);
+                        console.log(newDataCart);
+                        dispatch(setDataCart(newDataCart));
+                        dispatch(setCurrent(number - item.quantity));
                     })
                     .catch((e) => {
                         messageApi.open({
@@ -83,7 +90,8 @@ function Cart({ dataCart, uid }) {
         <>
             <div className="wrap_cart">
                 {contextHolder2}
-                {Array.isArray(dataCart) && dataCart.length > 0 ? (
+                {loading && <LoadingAntd subClass="subLoading" />}
+                {!loading && Array.isArray(dataCart) && dataCart.length > 0 ? (
                     <>
                         {dataCart.map((item, index) => (
                             <div className="items" key={index}>
@@ -92,7 +100,13 @@ function Cart({ dataCart, uid }) {
                                 <div className="content">
                                     <b>{item.product.name}</b>
                                     <div>
-                                        <div className="price">Giá: {item.product.price.toLocaleString('en-US')}</div>
+                                        <div className="price">
+                                            Giá:{' '}
+                                            {(
+                                                item.product.price -
+                                                (item.product.price * item.product.sale.percent || 0) / 100
+                                            ).toLocaleString('en-US')}
+                                        </div>
 
                                         <Quantity item={item} checkOut={checkOut} />
                                     </div>
@@ -113,7 +127,8 @@ function Cart({ dataCart, uid }) {
                                     checkOut.length > 0
                                         ? setShowBilling(true)
                                         : toast.warning('Chọn ít nhất 1 sản phẩm!', {
-                                              position: toast.POSITION.TOP_CENTER,
+                                              position: toast.POSITION.BOTTOM_LEFT,
+                                              autoClose: 1000,
                                           });
                                 }}
                                 className="button"
@@ -124,7 +139,7 @@ function Cart({ dataCart, uid }) {
                         {showBilling && (
                             <Billing product={checkOut} total={totalCoin} setShowBilling={setShowBilling} />
                         )}
-                        <ToastContainer autoClose={1000} />
+                        {/* <ToastContainer autoClose={1000} /> */}
                     </>
                 ) : (
                     <Empty />

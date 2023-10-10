@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 
 const Billing = ({ product, total, setShowBilling }) => {
-    const [address, setAddress] = useState('');
+    const [address, setAddress] = useState(localStorage.getItem('address'));
     const [distance, setDistance] = useState(0);
     const [totalShippingCost, setTotalShippingCost] = useState(0);
     const [loading, setLoading] = useState(false);
@@ -154,11 +154,11 @@ const Billing = ({ product, total, setShowBilling }) => {
                                     <img alt="" src={item.product.images} className="images" />
                                 </td>
                                 <td>{item.product.name}</td>
-                                <td>{item.product.price}</td>
+                                <td>{(item.product.price - (item.product.price * item.product.sale.percent || 0) / 100)}</td>
                                 <td>{item.quantity}</td>
                                 <td>{item.product.weight}</td>
                                 <td>{itemShippingCost}</td>
-                                <td>{Math.floor(item.product.price * item.quantity + itemShippingCost)}</td>
+                                <td>{Math.floor((item.product.price - (item.product.price * item.product.sale.percent || 0) / 100) * item.quantity + itemShippingCost)}</td>
                             </tr>
                         );
                     })}

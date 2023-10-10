@@ -4,16 +4,24 @@ import { getFirestore } from 'firebase/firestore';
 import { getMessaging } from 'firebase/messaging';
 import { getStorage } from 'firebase/storage';
 
+// const firebaseConfig = {
+//     apiKey: 'AIzaSyDcuDIddVQKAQoj0yMLrWsDTQDDAaAFY00',
+//     authDomain: 'fir-44abd.firebaseapp.com',
+//     databaseURL: 'https://fir-44abd-default-rtdb.firebaseio.com',
+//     projectId: 'fir-44abd',
+//     storageBucket: 'fir-44abd.appspot.com',
+//     messagingSenderId: '513391440326',
+//     appId: '1:513391440326:web:1c076486af50e8572742c7',
+// };
 const firebaseConfig = {
-    apiKey: 'AIzaSyDcuDIddVQKAQoj0yMLrWsDTQDDAaAFY00',
-    authDomain: 'fir-44abd.firebaseapp.com',
-    databaseURL: 'https://fir-44abd-default-rtdb.firebaseio.com',
-    projectId: 'fir-44abd',
-    storageBucket: 'fir-44abd.appspot.com',
-    messagingSenderId: '513391440326',
-    appId: '1:513391440326:web:1c076486af50e8572742c7',
+    apiKey: `${process.env.REACT_APP_apiKey}`,
+    authDomain: `${process.env.REACT_APP_authDomain}`,
+    databaseURL: `${process.env.REACT_APP_databaseURL}`,
+    projectId: `${process.env.REACT_APP_projectId}`,
+    storageBucket: `${process.env.REACT_APP_storageBucket}`,
+    messagingSenderId: `${process.env.REACT_APP_messagingSenderId}`,
+    appId: `${process.env.REACT_APP_appId}`,
 };
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);

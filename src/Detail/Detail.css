@@ -1,0 +1,96 @@
+.detail_component {
+    background-color: #f8f8f8;
+    min-height: 100vh;
+}
+
+.detail_img {
+    text-align: center;
+}
+
+.detail_img > img {
+    width: 380px;
+    height: 380px;
+    object-fit: cover;
+}
+
+.detail_info {
+}
+
+.detail_info--head {
+    display: flex;
+    align-items: center;
+    margin: 8px 0;
+}
+
+.detail__info--number--selected {
+    margin-bottom: 0;
+    margin-right: 24px;
+}
+.detail__info--number--input {
+    max-width: 50px;
+    text-align: center;
+    height: 28px;
+    border: 1px solid rgb(118, 118, 118);
+    border-left: 0;
+    border-right: 0;
+    outline: none;
+}
+
+.detail__info--number--btn {
+    height: 28px;
+    border: 1px solid rgb(118, 118, 118);
+    line-height: 10%;
+    border-radius: 0;
+}
+
+.detail_info--head.detail__btn {
+    margin-top: 24px;
+}
+
+.detail__btn--order {
+    background-color: #ff4040;
+    border: #ff3d3d;
+}
+
+.detail__btn--order:hover {
+    background-color: #ff2d2d !important;
+    outline: none;
+}
+
+.detail_info--brand {
+    margin-right: 24px;
+}
+.detail_info--sold {
+    padding-right: 24px;
+    border-right: 1px solid #ccc;
+}
+.detail_info--sold,
+.detail_info--original--price,
+.detail__info--number--selected {
+    min-width: 100px;
+}
+.detail_info--inventory {
+    padding-left: 24px;
+    border-left: 1px solid #ccc;
+}
+
+.detail_info--original--price {
+    text-decoration: line-through;
+    padding-right: 24px;
+    font-weight: 100;
+    color: rgb(184, 184, 184);
+}
+
+.detail_info--discounted--price {
+    color: red;
+    padding: 0 24px;
+    border-right: 2px solid #ccc;
+    border-left: 2px solid #ccc;
+}
+
+.detail_info--original--sale {
+    padding: 0 12px;
+    margin-left: 12px;
+    background-color: #ff4040;
+    color: white;
+}

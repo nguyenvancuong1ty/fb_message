@@ -9,7 +9,7 @@ function Quantity({ item, checkOut }) {
     const [num, setNum] = useState(item.quantity);
     const handleIncrease = async (item) => {
         if (checkOut.some((checkedItem) => checkedItem.cakeID === item.cakeID)) {
-            dispatch(setTotalCoin(totalCoin + item.product.price));
+            dispatch(setTotalCoin(totalCoin + (item.product.price - (item.product.price * item.product.sale.percent || 0) / 100)));
         }
         dispatch(increment());
         setNum((prev) => prev + 1);
@@ -41,7 +41,7 @@ function Quantity({ item, checkOut }) {
 
     const handleDecrease = async (item) => {
         if (checkOut.some((checkedItem) => checkedItem.cakeID === item.cakeID)) {
-            dispatch(setTotalCoin(totalCoin - item.product.price));
+            dispatch(setTotalCoin(totalCoin - (item.product.price - (item.product.price * item.product.sale.percent || 0) / 100)));
         }
         dispatch(decrease());
         setNum((prev) => prev - 1);
@@ -75,7 +75,11 @@ function Quantity({ item, checkOut }) {
         const total =
             Array.isArray(checkOut) && checkOut.length > 0
                 ? checkOut.reduce((init, item) => {
-                      return init + item.product.price * item.quantity;
+                      return (
+                          init +
+                          (item.product.price - (item.product.price * item.product.sale.percent || 0) / 100) *
+                              item.quantity
+                      );
                   }, 0)
                 : 0;
         dispatch(setTotalCoin(total));

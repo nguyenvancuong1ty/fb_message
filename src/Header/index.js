@@ -151,7 +151,7 @@ function Header(props) {
                                         <span className="number">{number}</span>
                                     </div>
                                 </div>
-                                {props.showCart && <Cart uid={uid} dataCart={dataCart} />}
+                                {props.showCart && <Cart uid={uid} dataCart={dataCart} number={number} />}
                             </li>
                         </ul>
                     </div>

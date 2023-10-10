@@ -59,17 +59,24 @@ function Cake({ item, setShow }) {
         });
     };
     const handleAddCart = (e, cakeID) => {
-        e.preventDefault()
+        e.preventDefault();
         localStorage.getItem('uid') ? showConfirm(cakeID) : setShow(true);
     };
     return (
         <>
             <Link to={`/detail/${item.Id}`} className="product__content--item">
-                <img src="./fa.webp" alt="" className="product__content--img" />
+                <img src={item.sale.url || './10.webp'} alt="" className="product__content--img" />
                 {/* <div className="product__content--img" /> */}
                 <div className="product__content--text">
                     <p className="product__content--name">{item.name}</p>
-                    <p className="product__content--sale--price">{item.price.toLocaleString('en-US')}đ</p>
+                    <p className="product__content--price">{item.price.toLocaleString('en-US')}đ</p>
+                    <p className="product__content--sale--price">
+                        {(item.sale.percent
+                            ? item.price - (item.price * item.sale.percent) / 100
+                            : item.price
+                        ).toLocaleString('en-US')}
+                        đ
+                    </p>
                     {/* <span className="product__content--price">{item.price}đ</span> */}
                     <Tooltip title="Add to cart" placement="topRight">
                         <div className="buy" onClick={(e) => handleAddCart(e, item.Id)}>
@@ -98,6 +105,7 @@ function Cake({ item, setShow }) {
 
                 <img src={item.images} alt="" className="product__content--img--foreign" />
             </Link>
+
             {contextHolder2}
         </>
     );

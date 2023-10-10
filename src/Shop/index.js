@@ -12,7 +12,9 @@ const Shop = () => {
         console.log(e, '---------', e.target);
         const file = e.target[0]?.files[0];
         if (!file) return;
+
         const storageRef = ref(storage, `files/${file.name}`);
+        console.log('fullPath', storageRef.fullPath, '____', storageRef.name, '______', storageRef.bucket);
         const uploadTask = uploadBytesResumable(storageRef, file);
 
         uploadTask.on(
@@ -22,7 +24,7 @@ const Shop = () => {
                 setProgresspercent(progress);
             },
             (error) => {
-                alert(error);
+                alert(error.message);
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -48,6 +50,9 @@ const Shop = () => {
                 console.log(error);
             });
     };
+    const handleChangeInput = (e) => {
+        console.log(e.target.files);
+    };
     useEffect(() => {
         async function fetchData() {
             const res = await api.post('/account/login', { id: 100 });
@@ -55,18 +60,28 @@ const Shop = () => {
         }
         fetchData();
     }, []);
+    const handlePushNotification = () => {
+        axios({
+            method: 'post',
+            url: `${process.env.REACT_APP_API_URL}/notify-all`,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+        });
+    };
     return (
         <div>
             <div>
                 <button onClick={handleClick}>lấy lại</button>
+                <button onClick={handlePushNotification}>Gửi thông báo</button>
                 <form onSubmit={handleSubmit} className="form">
-                    <input type="file" />
+                    <input type="file" onChange={handleChangeInput} />
                     <button type="submit">Upload</button>
                 </form>
                 {!imgUrl && (
                     <div className="outerbar">
                         <div className="innerbar" style={{ width: `${progresspercent}%` }}>
-                            {progresspercent}%
+                            Loading...{progresspercent}%
                         </div>
                     </div>
                 )}

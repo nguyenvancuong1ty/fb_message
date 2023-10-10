@@ -58,7 +58,7 @@ const HeaderMobile = () => {
                 defaultSelectedKeys={['1']}
                 defaultOpenKeys={['sub1']}
                 mode="inline"
-                theme="dark"
+                theme="light"
                 inlineCollapsed={collapsed}
                 items={items}
             />

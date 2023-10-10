@@ -9,6 +9,14 @@ function NotificationComponent() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [notify, setNotify] = useState(null);
     const [token, setToken] = useState('');
+    const handlePushNotification = () => {
+        console.log('Sẵn sàng nhận thông báo');
+        onMessage(messaging, (payload) => {
+            setNotify(payload);
+            console.log(payload);
+            setIsModalOpen(true);
+        });
+    };
     useEffect(() => {
         const registerNotification = async () => {
             try {
@@ -16,23 +24,28 @@ function NotificationComponent() {
                     vapidKey: 'BMHxPXJyw10y2qfn3W7IljBQE7u1YW7ORLeAubHV3_lJUPiOQBGhndWSv4ZbSXHkIUIzAhyN1AaKmst_naCqNZ8',
                 });
                 setToken(currentToken);
+                console.log('Chấp nhận nhận thông báo', currentToken);
+                handlePushNotification();
+                axios({
+                    method: 'post',
+                    url: `${process.env.REACT_APP_API_URL}/registerNotify`,
+                    data: {
+                        token: currentToken,
+                    },
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                });
             } catch (error) {
                 console.log('Error:------------------', error);
             }
         };
 
         // Xử lý Push Notification khi nhận được
-        const handlePushNotification = () => {
-            onMessage(messaging, (payload) => {
-                setNotify(payload);
-                console.log(payload);
-                setIsModalOpen(true);
-            });
-        };
 
         registerNotification();
-        handlePushNotification();
     }, []);
+
     useEffect(() => {
         const ordersRef = collection(db, 'order');
         const queryRef = query(
@@ -47,7 +60,7 @@ function NotificationComponent() {
                 } else if (change.type === 'removed') {
                 } else if (change.type === 'modified') {
                     const newOrder = change.doc.data();
-                    console.log(newOrder);
+                    console.log('re-render');
                     newOrder.id_user_shipper &&
                         newOrder.status === 'shipping' &&
                         axios({
@@ -108,10 +121,10 @@ function NotificationComponent() {
                 }}
             >
                 <div style={{ display: 'flex' }}>
-                    <img alt="" src={notify && notify.notification.image} style={{ width: 30, height: 30 }} />
-                    <h1>{notify && notify.notification.title}</h1>
+                    <img alt="" src={notify && notify.data.image} style={{ width: 30, height: 30 }} />
+                    <h1>{notify && notify.data.title}</h1>
                 </div>
-                <h5>{notify && notify.notification.body}</h5>
+                <h5>{notify && notify.data.body}</h5>
             </Modal>
         </>
     );

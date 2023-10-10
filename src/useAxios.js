@@ -16,10 +16,8 @@ function useAxios({ url, method, authentication, input }) {
                 },
             })
                 .then((res) => {
-                    setTimeout(() => {
-                        setLoading(false);
-                    }, 200);
                     Array.isArray(res) ? setData(res) : setData([res]);
+                    setLoading(false);
                 })
                 .catch((e) => {
                     setLoading(false);
