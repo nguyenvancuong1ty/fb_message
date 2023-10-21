@@ -97,7 +97,7 @@ function Cake({ item, setShow }) {
                         <div
                             className="bought__up"
                             style={{
-                                width: `${(item.sold / (item.inventory + item.sold)) * 100}%`,
+                                width: `${Math.floor((item.sold / item.quantity) * 100)}%`,
                             }}
                         ></div>{' '}
                     </div>

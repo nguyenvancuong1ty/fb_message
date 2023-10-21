@@ -3,6 +3,7 @@ import { Button, Checkbox, Form, Input } from 'antd';
 import axios from 'axios';
 import { useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import LoadingAntd from '~/Loading/Loading.antd';
 import LoginFacebook from '~/LoginFacebook';
@@ -12,6 +13,7 @@ import Register from '~/component/Register';
 const LoginCpn = ({ setShow, setUid }) => {
     const [showRegister, setShowRegister] = useState(false);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
     const onFinish = async (values) => {
         setLoading(true);
         await axios({
@@ -30,6 +32,7 @@ const LoginCpn = ({ setShow, setUid }) => {
                 setTimeout(() => {
                     setLoading(false);
                     setShow(false);
+                    res.data.metadata.data.type_account === 'admin' && navigate('/admin/');
                 }, 1000);
             })
             .catch((e) => {

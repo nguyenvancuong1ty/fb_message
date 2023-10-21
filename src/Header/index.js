@@ -38,11 +38,11 @@ function Header(props) {
             })
                 .then((res) => {
                     const newData =
-                        res.data &&
+                        res.data.metadata &&
                         res.data.metadata.sort((a, b) => {
-                            return a.product.price - b.product.price;
+                            return b.createdDate._seconds - a.createdDate._seconds;
                         });
-                    dispatch(setDataCart(newData));
+                    dispatch(setDataCart(res.data.metadata));
                 })
                 .catch((e) => alert(e.message));
         // eslint-disable-next-line
@@ -74,7 +74,7 @@ function Header(props) {
                     <div className="col-xl-3">
                         <NavLink to="/" className="res_logo">
                             <img
-                                src="https://theme.hstatic.net/200000460475/1000990214/14/logo.png?v=127"
+                                src="/logo.webp"
                                 alt=""
                                 className="logo"
                             />
