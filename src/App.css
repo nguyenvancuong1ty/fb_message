@@ -2,7 +2,8 @@
     --primary-color--: #a50a06;
 }
 .App {
-    min-height: 120vh;
+    /* min-height: 120vh; */
+    /* background: #ccc; */
 }
 
 body::-webkit-scrollbar {
@@ -259,8 +260,12 @@ body::-webkit-scrollbar {
     justify-content: center;
 }
 
-.billing-loader.subLoading {
+.subLoading {
     position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 .overlay-wrap {
     margin-top: 132px !important;
